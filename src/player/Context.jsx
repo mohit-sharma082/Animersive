@@ -106,7 +106,8 @@ const PlayerContext = ({ children }) => {
 
       console.log(`\n\n~~~~~~~~~~~~~~~~~ LOAD SINGLE EPISODE - ${episodeId} ~~~~~~~~~~~~~~~~~\n\n`);
       const config = await extract(episodeId, { lang: 'English' });
-      // console.log(config);
+      console.log(`~~~~~~~~~~~~~~~-> `,config);
+      if(!config?.sources?.[0]?.url?.length) return
       dispatch({ type: 'CONFIG', payload: { config } });
       dispatch({ type: 'EPISODE_ID', payload: { episodeId } });
       if (config?.thumbnails) {

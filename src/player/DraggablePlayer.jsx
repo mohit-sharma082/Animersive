@@ -60,6 +60,8 @@ function DragablePlayer({ player }) {
   const isAnimating = useSharedValue(false);
 
   const fullScreenListener = useRef(null);
+  const paginationFlatListRef = useRef(null); // Step 1: Create a ref for FlatList
+
   const { state, dispatch, videoRef, load } = usePlayer();
 
   const [visibleEpisodes, setVisibleEpisodes] = useState([...state.episodes.slice(0, 10)]);
@@ -90,7 +92,7 @@ function DragablePlayer({ player }) {
   const onStart = ({ y }) => {
     'worklet';
     if (state.fullscreen) {
-      console.log('\n=>Fullscreen PAN VALUE START => ', y);
+      // console.log('\n=>Fullscreen PAN VALUE START => ', y);
       return;
     }
     heightOffset.value = y;
@@ -123,7 +125,7 @@ function DragablePlayer({ player }) {
   const onEnd = ({ velocityY }) => {
     'worklet';
     if (state.fullscreen) {
-      console.log('\n=>Fullscreen PAN VALUE END => ', velocityY);
+      // console.log('\n=>Fullscreen PAN VALUE END => ', velocityY);
       return;
     }
     heightOffset.value = 0;
@@ -178,7 +180,7 @@ function DragablePlayer({ player }) {
     });
     state.fullscreen = true;
     Orientation.lockToLandscape();
-    console.log(SCREEN_HEIGHT / SCREEN_WIDTH);
+    // console.log(SCREEN_HEIGHT / SCREEN_WIDTH);
     playerAspectRatio.value = SCREEN_HEIGHT / SCREEN_WIDTH;
     playerWidth.value = SCREEN_HEIGHT;
     videoRef.current.presentFullscreenPlayer();
@@ -262,6 +264,9 @@ function DragablePlayer({ player }) {
         }}>
 
           <Text
+          onPress={() => {
+            paginationFlatListRef?.current?.scrollToOffset({ offset: 0, animated: true }); // Step 2: Scroll to start
+          }}
             style={{
               color: 'white',
               padding: 10,
@@ -273,29 +278,36 @@ function DragablePlayer({ player }) {
           </Text>
 
           <FlatList
+            ref={paginationFlatListRef}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             horizontal={true}
             data={pagination}
             style={{ paddingRight: 50 }}
-            contentContainerStyle={{ gap: 15, paddingStart: 4 }}
+            contentContainerStyle={{ gap: 15, paddingHorizontal: 10 }}
             renderItem={({ item: { episodeIds, text }, index }) => {
               return (
-                <TouchableOpacity onPress={() => {
-                  const nextEpisodes = state.episodes.slice(index * 10, (index + 1) * 10);
-                  setVisibleEpisodes(nextEpisodes);
-                }} >
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() => {
+                    const nextEpisodes = state.episodes.slice(index * 10, (index + 1) * 10);
+                    setVisibleEpisodes(nextEpisodes);
+                  }} >
                   <Text
                     style={{
-                      color: 'white',
-                      padding: 15,
+                      color: episodeIds?.includes(state.episodeId) || episodeIds?.includes(visibleEpisodes[0].episodeId) ? 'white' : 'rgba(255, 255, 255, 0.5)',
+                      padding: 10,
                       fontSize: 12,
-                      borderColor: episodeIds?.includes(state.episodeId) ? primaryColor : backgroundColor,
+                      // borderColor: episodeIds?.includes(state.episodeId) || episodeIds?.includes(visibleEpisodes[0].episodeId)  ? primaryColor : backgroundColor,
                       borderWidth: 1,
                       backgroundColor: episodeIds?.includes(visibleEpisodes[0].episodeId)
                         ? primaryColor
+                        : 'transparent',
+                      borderRadius: episodeIds?.includes(visibleEpisodes[0].episodeId) ? 10 : 2,
+                      borderWidth: 1,
+                      borderColor: episodeIds?.includes(visibleEpisodes[0].episodeId) || episodeIds?.includes(state.episodeId)
+                        ? primaryColor
                         : 'rgba(255, 255, 255, 0.1)',
-                      borderRadius: 2
                     }}>
                     {text}
                   </Text>
@@ -317,7 +329,7 @@ function DragablePlayer({ player }) {
 
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          style={{ marginBottom: 100 }}
+          // style={{ marginBottom: 100 }}
           data={visibleEpisodes}
           contentContainerStyle={{
             gap: 10,
@@ -329,21 +341,27 @@ function DragablePlayer({ player }) {
                 onPress={() => load(episodeId)}
                 style={{
                   marginHorizontal: 14,
-                  marginTop: 4,
+                  marginTop: 2,
                   paddingHorizontal: 20,
-                  paddingVertical: 14,
+                  paddingVertical: 12,
                   borderBottomColor: '#ccc',
                   backgroundColor:
                     state.episodeId === episodeId
                       ? primaryColor
-                      : 'rgba(255, 255, 255, 0.1)',
-                  borderRadius: 6,
+                      : 'transparent',
+                  borderRadius: 4,
+                  borderWidth: 1,
+                  borderColor: state.episodeId === episodeId
+                    ? primaryColor
+                    : 'rgba(255, 255, 255, 0.1)',
+
                 }}>
                 <Text
                   style={{
-                    color: state.episodeId === episodeId ? 'black' : 'white',
+                    color: state.episodeId === episodeId ? 'black' : 'gray',
+                    fontWeight: state.episodeId === episodeId ? '500' : 'normal',
                   }}>
-                  {state.episodes.indexOf(state.episodes.find(item => item.episodeId == episodeId)) + 1} <Icons name={'arrow-right'} size={12} /> {title}
+                  {state.episodes.indexOf(state.episodes.find(item => item.episodeId == episodeId)) + 1} <Icons name={'arrow-right'} size={12} /> {'  '} {title}
                 </Text>
               </TouchableOpacity>
             );

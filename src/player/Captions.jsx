@@ -46,7 +46,7 @@ const Captions = ({  }) => {
             height: 0,
             width: 0,
           },
-          textShadowRadius: 20,
+          textShadowRadius: 15,
           textShadowColor: 'black',
           margin: 4,
         }}>
