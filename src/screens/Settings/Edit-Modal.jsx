@@ -23,7 +23,7 @@ const EditProfileModal = ({ visible, onClose, user, onSave }) => {
             onRequestClose={onClose}
         >
             <ImageBackground
-                source={require('../../assets/mesh.png')}
+                source={require('../../assets/mesh-3.png')}
                 style={styles.backgroundImage}
             >
 

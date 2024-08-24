@@ -203,18 +203,20 @@ const User = ({ }) => {
       setUser(data);
     });
   }
-  const colors = ['red', 'green', 'orange', 'violet', 'gray', 'pink', 'brown', APP_CONFIG.primaryColor];
+  const colors = ['red', 'green', 'orange', 'violet', 'gray', 'pink', 'brown','teal', APP_CONFIG.primaryColor];
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
   return (
-    <View style={{ ...styles.userSection, 
-    // borderBottomColor: randomColor
-     }}>
-      <View style={{ ...styles.firstChar, backgroundColor: randomColor }}>
+    <View style={{
+      ...styles.userSection,
+      borderColor: randomColor,
+      backgroundColor: randomColor + '10'
+    }}>
+      <View style={{ ...styles.firstChar, backgroundColor: randomColor, borderColor: '#ffffff80' }}>
         <Text style={{
           color: '#fff',
           fontWeight: '600',
-          fontSize: 30,
+          fontSize: 20,
         }}>
           {user?.name.charAt(0).toUpperCase()}
         </Text>
@@ -287,7 +289,9 @@ const Body = ({ data = null }) => {
   };
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
+    <>
+      <Text style={styles.bodyHeading}>Settings</Text>
+    <View style={{ ...styles.body }}>
       <SettingItem
         label="Mode"
         selectedValue={preferences.sub ? 'sub' : 'dub'}
@@ -333,8 +337,8 @@ const Body = ({ data = null }) => {
 
       <MyButton title={'Save'}
         style={{
-          paddingVertical: 10,
-          width: '30%'
+          paddingVertical: 4,
+          width: '20%'
         }}
         textStyles={{ fontSize: 16 }}
         secondary={true}
@@ -347,6 +351,7 @@ const Body = ({ data = null }) => {
             })
         }} />
     </View>
+    </>
   )
 }
 

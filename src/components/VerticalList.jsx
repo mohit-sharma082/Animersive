@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MyButton from './UI/MyButton';
 import APP_CONFIG from '../../app.json';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { FlashList, AnimatedFlashList } from '@shopify/flash-list';
+import { getPalette } from 'react-native-palette-picker';
+import { hexToHSL } from '../screens/Anime/AnimeScreen';
 
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -57,6 +59,107 @@ const VerticalList = ({ animes = [] }) => {
     const ITEM_MIN_HEIGHT = (Dimensions.get('window').height / 5) ?? 150
     const navigation = useNavigation()
 
+
+    const IndividualItem = ({ anime }) => {
+        const [color, setColor] = useState((APP_CONFIG.primaryColor) + '10');
+
+        function getColor() {
+            console.log(`get color : `, anime.poster);
+
+            getPalette(anime?.poster, {
+                fallback: (APP_CONFIG.primaryColor),
+                fallbackTextColor: '#ffffff',
+
+            }).then(res => {
+                const colors = ({ ...res, darkVibrant: hexToHSL(res.vibrant) });
+                setColor(colors?.darkVibrant ?? color)
+                console.log(`COLORS => `, colors);
+
+            }).catch(err => {
+                console.log(`ERROR IN COLOR : `, err);
+
+            });
+
+        }
+
+        useEffect(() => {
+            getColor()
+
+        }, [])
+
+
+        return (<TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => navigation.navigate("Anime", { id: anime.id })}
+            style={{
+                minHeight: ITEM_MIN_HEIGHT,
+                backgroundColor: (APP_CONFIG.primaryColor) + '10',
+                display: 'flex', flexDirection: 'row', alignItems: 'center',
+                borderRadius: 8
+            }}>
+            {/* IMAGE SECTION  */}
+            <View style={{ margin: 5, minHeight: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7, backgroundColor: APP_CONFIG.primaryColor + '50' }}>
+                {!!anime.poster?.length &&
+                    <Image source={{ uri: anime.poster }} style={{ height: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7, borderRadius: 5 }} />
+                }
+            </View>
+
+            {/* DETAILS SECCTION */}
+            <View style={{
+                flex: 1,
+                minHeight: ITEM_MIN_HEIGHT,
+
+            }} >
+                <Text numberOfLines={3} textBreakStrategy='highQuality'
+                    style={{ fontWeight: '600', color: '#fff', fontSize: 16, paddingLeft: 8, }}>
+                    {anime?.name}
+                </Text>
+                <Text numberOfLines={3} textBreakStrategy='highQuality'
+                    style={{ fontSize: 12, paddingHorizontal: 8, paddingVertical: 4 }}>
+                    {anime?.description}
+                </Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {
+                        Object.values(anime?.info ?? {})
+                            ?.filter((item) => item != '-' && item != ' - ')
+                            .map((item, index) => {
+                                return (
+                                    <View
+                                        key={index}
+                                        style={{
+                                            fontSize: 10,
+                                            backgroundColor: color + '90',
+                                            borderColor: color,
+                                            borderWidth: 1,
+                                            margin: 3,
+                                            padding: 4,
+                                            paddingHorizontal: 8,
+                                            borderRadius: 5,
+                                            color: '#fff',
+                                        }}>
+
+                                        <Text
+                                            style={{
+                                                fontSize: 10,
+                                                borderRadius: 5, color: '#fff',
+                                                // fontStyle: 'italic'
+                                            }}
+                                            key={index}>
+                                            {item
+                                                ?.toString()
+                                                ?.replace('?', '')
+                                                ?.replace('- -', '- ?')
+                                            }
+                                        </Text>
+                                    </View>
+                                )
+                            })
+                    }
+                </View>
+            </View>
+
+        </TouchableOpacity>)
+    }
     return (
         <FlashList
             // style={{ width: '100%', minHeight: Dimensions.get('window').height / 2, }}
@@ -65,76 +168,78 @@ const VerticalList = ({ animes = [] }) => {
             vertical
             data={animes}
             keyExtractor={(anime) => anime.id.toString() + anime.title}
-            renderItem={({ item: anime, index: i }) => (
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Anime", { id: anime.id })}
-                    style={{
-                        minHeight: ITEM_MIN_HEIGHT,
-                        backgroundColor: APP_CONFIG.primaryColor + '10',
-                        display: 'flex', flexDirection: 'row', alignItems: 'center',
-                        borderRadius: 8
-                    }}>
-                    {/* IMAGE SECTION  */}
-                    <View style={{ margin: 5, minHeight: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7,backgroundColor: APP_CONFIG.primaryColor + '50' }}>
-                        {!!anime.poster?.length &&
-                            <Image source={{ uri: anime.poster }} style={{ height: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7, borderRadius: 5 }} />
-                        }
-                    </View>
+            renderItem={({ item: anime, index: i }) => (<IndividualItem key={i} anime={anime} />)}
+            // renderItem={({ item: anime, index: i }) => (
+            //     <TouchableOpacity
+            //         activeOpacity={0.9}
+            //         onPress={() => navigation.navigate("Anime", { id: anime.id })}
+            //         style={{
+            //             minHeight: ITEM_MIN_HEIGHT,
+            //             backgroundColor: getColor(anime.poster),
+            //             display: 'flex', flexDirection: 'row', alignItems: 'center',
+            //             borderRadius: 8
+            //         }}>
+            //         {/* IMAGE SECTION  */}
+            //         <View style={{ margin: 5, minHeight: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7, backgroundColor: APP_CONFIG.primaryColor + '50' }}>
+            //             {!!anime.poster?.length &&
+            //                 <Image source={{ uri: anime.poster }} style={{ height: ITEM_MIN_HEIGHT, minWidth: ITEM_MIN_HEIGHT * 0.7, borderRadius: 5 }} />
+            //             }
+            //         </View>
 
-                    {/* DETAILS SECCTION */}
-                    <View style={{
-                        flex: 1,
-                        minHeight: ITEM_MIN_HEIGHT,
+            //         {/* DETAILS SECCTION */}
+            //         <View style={{
+            //             flex: 1,
+            //             minHeight: ITEM_MIN_HEIGHT,
 
-                    }} >
-                        <Text numberOfLines={3} textBreakStrategy='highQuality' style={{ fontWeight: '600', color: '#fff', fontSize: 16, paddingLeft: 8 }}>
-                            {anime?.name}
-                        </Text>
-                        <Text numberOfLines={3} textBreakStrategy='highQuality' style={{ fontSize: 12, paddingHorizontal: 8, fontStyle: 'italic' }}>
-                            {anime?.description}
-                        </Text>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {
-                                Object.values(anime?.info ?? {})
-                                    ?.filter((item) => item != '-' && item != ' - ')
-                                    .map((item, index) => {
-                                        return (
-                                            <View
-                                                key={index}
-                                                style={{
-                                                    fontSize: 10,
-                                                    backgroundColor: APP_CONFIG.primaryColor + '90',
-                                                    borderColor: APP_CONFIG.primaryColor,
-                                                    borderWidth: 1,
-                                                    margin: 3,
-                                                    padding: 4,
-                                                    paddingHorizontal: 8,
-                                                    borderRadius: 5,
-                                                    color: '#fff',
-                                                }}>
+            //         }} >
+            //             <Text numberOfLines={3} textBreakStrategy='highQuality' style={{ fontWeight: '600', color: '#fff', fontSize: 16, paddingLeft: 8 }}>
+            //                 {anime?.name}
+            //             </Text>
+            //             <Text numberOfLines={3} textBreakStrategy='highQuality' style={{ fontSize: 12, paddingHorizontal: 8, fontStyle: 'italic' }}>
+            //                 {anime?.description}
+            //             </Text>
+            //             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            //                 {
+            //                     Object.values(anime?.info ?? {})
+            //                         ?.filter((item) => item != '-' && item != ' - ')
+            //                         .map((item, index) => {
+            //                             return (
+            //                                 <View
+            //                                     key={index}
+            //                                     style={{
+            //                                         fontSize: 10,
+            //                                         backgroundColor: APP_CONFIG.primaryColor + '90',
+            //                                         borderColor: APP_CONFIG.primaryColor,
+            //                                         borderWidth: 1,
+            //                                         margin: 3,
+            //                                         padding: 4,
+            //                                         paddingHorizontal: 8,
+            //                                         borderRadius: 5,
+            //                                         color: '#fff',
+            //                                     }}>
 
-                                                <Text
-                                                    style={{
-                                                        fontSize: 10,
-                                                        borderRadius: 5, color: '#fff',
-                                                        fontStyle: 'italic'
-                                                    }}
-                                                    key={index}>
-                                                    {item
-                                                        ?.toString()
-                                                        ?.replace('?', '')
-                                                        ?.replace('- -', '- ?')
-                                                    }
-                                                </Text>
-                                            </View>
-                                        )
-                                    })
-                            }
-                        </View>
-                    </View>
+            //                                     <Text
+            //                                         style={{
+            //                                             fontSize: 10,
+            //                                             borderRadius: 5, color: '#fff',
+            //                                             fontStyle: 'italic'
+            //                                         }}
+            //                                         key={index}>
+            //                                         {item
+            //                                             ?.toString()
+            //                                             ?.replace('?', '')
+            //                                             ?.replace('- -', '- ?')
+            //                                         }
+            //                                     </Text>
+            //                                 </View>
+            //                             )
+            //                         })
+            //                 }
+            //             </View>
+            //         </View>
 
-                </TouchableOpacity>
-            )}
+            //     </TouchableOpacity>
+            // )}
             estimatedItemSize={ITEM_MIN_HEIGHT * 0.75}
             ItemSeparatorComponent={() => <View style={{ height: 1, margin: 6, backgroundColor: APP_CONFIG.primaryColor + '60' }} />}
         />

@@ -5,11 +5,11 @@ export default styles = StyleSheet.create({
 
     settingItem: {
         marginVertical: 10,
-        paddingVertical: 10,
-        paddingLeft: 12,
+        // paddingVertical: 4,
+        // paddingLeft: 12,
         width: '100%',
-        borderWidth: 2,
-        borderBottomColor: APP_CONFIG.primaryColor + '30',
+        // borderWidth: 2,
+        // borderBottomColor: APP_CONFIG.primaryColor + '30',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -17,7 +17,7 @@ export default styles = StyleSheet.create({
     settingLabel: {
         fontSize: 16,
         fontWeight: '600',
-        fontStyle: 'italic',
+        // fontStyle: 'italic',
         color: '#fff'
     },
     picker: {
@@ -30,6 +30,7 @@ export default styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingBottom: 10,
         // paddingTop: StatusBar.currentHeight / 1.1,
+        backgroundColor: '#121212'
     },
     pageTitle: {
         fontSize: 20,
@@ -47,6 +48,14 @@ export default styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '600',
     },
+    bodyHeading: {
+        width: '100%',
+        fontSize: 22,
+        fontWeight: '600',
+        paddingVertical: 10,
+        marginHorizontal: 20,
+        color: '#fff'
+    },
 
     scrollContainer: {
         height: '100%',
@@ -58,13 +67,16 @@ export default styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        // borderRadius: 10,
+        borderRadius: 10,
         minHeight: 60,
-        paddingBottom: 10,
-        paddingRight: 8,
-        borderBottomWidth: 2,
+        // paddingBottom: 10,
+        // paddingRight: 8,
+        paddingVertical: 30,
+        paddingHorizontal: 25,
+        margin: 10,
+        borderWidth: 2,
         // borderStyle: 'dashed',
-        borderBottomColor: '#ffffff20',
+        borderColor: '#ffffff20',
     },
 
     firstChar: {
@@ -72,22 +84,24 @@ export default styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 70,
-        width: 70,
+        height: 55,
+        width: 55,
         borderRadius: 100,
         backgroundColor: '#212121',
-        margin: 10,
+        marginRight: 10,
         borderWidth: 1,
         borderColor: 'gray'
     },
 
     body: {
-        padding: 10,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: '100%',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        margin: 10,
+        padding: 15,
+        borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'orange'
+        borderColor: '#ffffff10',
     },
 
 

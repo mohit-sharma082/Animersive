@@ -389,7 +389,7 @@ const useImageColors = imgUri => {
   return colors;
 };
 
-function hexToHSL(H) {
+export function hexToHSL(H) {
   // Convert hex to RGB first
   let r = 0,
     g = 0,

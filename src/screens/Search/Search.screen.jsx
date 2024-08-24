@@ -10,7 +10,7 @@ import Playlist from '../../components/Playlist.jsx';
 import Grid from '../../components/Grid.jsx';
 
 function SearchScreen() {
-  const [search, setSearch] = useState('Demon Slayer');
+  const [search, setSearch] = useState('Shoshimin');
   const [mostPopularAnimes, setMostPopularAnimes] = useState([])
 
   const queryClient = useQueryClient()
