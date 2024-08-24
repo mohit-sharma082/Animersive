@@ -67,7 +67,7 @@ export default styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 20,
         minHeight: 60,
         // paddingBottom: 10,
         // paddingRight: 8,

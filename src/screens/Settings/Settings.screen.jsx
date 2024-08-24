@@ -203,7 +203,7 @@ const User = ({ }) => {
       setUser(data);
     });
   }
-  const colors = ['red', 'green', 'orange', 'violet', 'gray', 'pink', 'brown','teal', APP_CONFIG.primaryColor];
+  const colors = ['red', 'green', 'orange', 'violet', 'gray', 'brown', 'teal', APP_CONFIG.primaryColor];
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
   return (
@@ -291,66 +291,66 @@ const Body = ({ data = null }) => {
   return (
     <>
       <Text style={styles.bodyHeading}>Settings</Text>
-    <View style={{ ...styles.body }}>
-      <SettingItem
-        label="Mode"
-        selectedValue={preferences.sub ? 'sub' : 'dub'}
-        onValueChange={handleModeChange}
-        options={[
-          { label: "Subtitles", value: "sub" },
-          { label: "Dubbed", value: "dub" }
-        ]}
-      />
-      <SettingItem
-        label="Download Quality"
-        selectedValue={preferences.downloadQuality}
-        onValueChange={handleDownloadQualityChange}
-        options={[
-          { label: "Highest", value: "highest" },
-          { label: "High", value: "high" },
-          { label: "Medium", value: "medium" },
-          { label: "Low", value: "low" }
-        ]}
-      />
-      <SettingItem
-        label="Preferred Streaming Quality"
-        selectedValue={preferences.quality}
-        onValueChange={handleStreamingQuality}
-        options={[
-          { label: "Highest", value: "highest" },
-          { label: "High", value: "high" },
-          { label: "Medium", value: "medium" },
-          { label: "Low", value: "low" }
-        ]}
-      />
+      <View style={{ ...styles.body }}>
+        <SettingItem
+          label="Mode"
+          selectedValue={preferences.sub ? 'sub' : 'dub'}
+          onValueChange={handleModeChange}
+          options={[
+            { label: "Subtitles", value: "sub" },
+            { label: "Dubbed", value: "dub" }
+          ]}
+        />
+        <SettingItem
+          label="Download Quality"
+          selectedValue={preferences.downloadQuality}
+          onValueChange={handleDownloadQualityChange}
+          options={[
+            { label: "Highest", value: "highest" },
+            { label: "High", value: "high" },
+            { label: "Medium", value: "medium" },
+            { label: "Low", value: "low" }
+          ]}
+        />
+        <SettingItem
+          label="Preferred Streaming Quality"
+          selectedValue={preferences.quality}
+          onValueChange={handleStreamingQuality}
+          options={[
+            { label: "Highest", value: "highest" },
+            { label: "High", value: "high" },
+            { label: "Medium", value: "medium" },
+            { label: "Low", value: "low" }
+          ]}
+        />
 
-      <SettingItem
-        label="Language"
-        selectedValue={preferences.lang}
-        enabled={false}
-        onValueChange={handleModeChange}
-        options={[
-          { label: "English", value: "english" },
-          { label: "Hindi", value: "hindi" }
-        ]}
-      />
+        <SettingItem
+          label="Language"
+          selectedValue={preferences.lang}
+          enabled={false}
+          onValueChange={handleModeChange}
+          options={[
+            { label: "English", value: "english" },
+            { label: "Hindi", value: "hindi" }
+          ]}
+        />
 
-      <MyButton title={'Save'}
-        style={{
-          paddingVertical: 4,
-          width: '20%'
-        }}
-        textStyles={{ fontSize: 16 }}
-        secondary={true}
-        onPress={() => {
-          console.log(`preferences`, preferences);
-          AsyncStorage.setItem('preferences', JSON.stringify(preferences))
-            .then(() => {
-              console.log('Preferences saved successfully');
-              ToastAndroid.show('Preferences saved successfully', ToastAndroid.LONG);
-            })
-        }} />
-    </View>
+        <MyButton title={'Save'}
+          style={{
+            paddingVertical: 4,
+            width: '20%'
+          }}
+          textStyles={{ fontSize: 16 }}
+          secondary={true}
+          onPress={() => {
+            console.log(`preferences`, preferences);
+            AsyncStorage.setItem('preferences', JSON.stringify(preferences))
+              .then(() => {
+                console.log('Preferences saved successfully');
+                ToastAndroid.show('Preferences saved successfully', ToastAndroid.LONG);
+              })
+          }} />
+      </View>
     </>
   )
 }

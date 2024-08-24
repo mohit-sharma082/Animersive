@@ -3,12 +3,13 @@ import { Text, UIManager, View, findNodeHandle } from 'react-native';
 import { useProgress } from './ProgressContext';
 import { usePlayer } from './Context';
 
-const Captions = ({  }) => {
+const Captions = ({ data= {} }) => {
   const [currentSubtitle, setCurrentSubtitle] = useState(null);
   const {
     progress: { currentTime },
   } = useProgress();
   const { state } = usePlayer();
+  // const [fontSize, setFontSize]
   useEffect(() => {
     // console.log('currentTime changed', currentTime);
     if (!state?.config?.textTrack?.length) return;
@@ -27,7 +28,7 @@ const Captions = ({  }) => {
 
   }, [currentTime]);
 
-
+// return null
   return currentSubtitle && state.config?.textTrack ? (
     <View
       style={{
@@ -38,7 +39,7 @@ const Captions = ({  }) => {
       }}>
       <Text
         style={{
-          fontSize: !state?.fullScreen ? 12 : 20,
+          fontSize: state?.captionsFontSize ?? 12,
           color: 'white',
           fontWeight: 'bold',
           textAlign: 'center',
@@ -50,6 +51,7 @@ const Captions = ({  }) => {
           textShadowColor: 'black',
           margin: 4,
         }}>
+          {/* {JSON.stringify(data, 0 , 2)} */}
         {currentSubtitle}
       </Text>
     </View>

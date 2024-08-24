@@ -21,6 +21,7 @@ const initialState = {
   showControls: true,
   config: null,
   fullscreen: false,
+  captionsFontSize: 12,
   isBuffering: false,
   isSeeking: false,
   episodes: [],
@@ -55,6 +56,7 @@ const PlayerContext = ({ children }) => {
         return {
           ...state,
           fullscreen: payload.fullscreen,
+          captionsFontSize: (!!payload?.fullscreen) ? 20 : 12
         };
       case 'BUFFER':
         return {
