@@ -238,12 +238,13 @@ async function scrapeHomePage() {
 
     console.log(`~~~~~~~~~~~~~~~~~~`)
     console.log(`HOME PAGE DATA : `);
-    for(const key in res){
+    for (const key in res) {
       console.log(`~ ${key} : ${res[key]?.length}`);
     }
+    // console.log(`~ topUpcomingAnimes VALUE : ${JSON.stringify(res.topUpcomingAnimes, 0, 4)}`);
     console.log(`~~~~~~~~~~~~~~~~~~`)
 
-      
+
     return res;
   } catch (err) {
     throw err

@@ -7,10 +7,10 @@ const routes = [
     icon: 'search',
     name: 'Search',
   },
-  // {
-  //   icon: 'download',
-  //   name: 'Downloads',
-  // },
+  {
+    icon: 'download',
+    name: 'Downloads',
+  },
   {
     icon: 'server',
     name: 'Collection',

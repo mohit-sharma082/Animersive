@@ -5,7 +5,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { View } from 'react-native';
 
-const Icons = ({ name, type, size, color }) => {
+const Icons = ({ name, type, size, color= 'white' }) => {
     switch (type) {
         case 'material':
             return <MaterialCommunityIcons name={name} size={size ?? 20} color={color} />

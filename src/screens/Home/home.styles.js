@@ -42,6 +42,7 @@ export default styles = StyleSheet.create({
         padding: 10,
         paddingHorizontal: 10,
         color: '#fff',
-        fontWeight: '600'
+        fontWeight: '600',
+
     },
 })

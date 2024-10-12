@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { Alert } from 'react-native';
-import { DownloadUtility } from '../utitlities/downloadUtitliy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import scrapeAnimeEpisodes from '../scrapers/scrapeEpisodes';
 const Context = createContext();
 
 export function useGlobalContext() {
@@ -12,7 +12,7 @@ const GlobalContext = ({ children }) => {
   const initialState = {
     downloadState: {
       inProgress: { epId: null, url: null, progress: 0, name: null },
-      anime: { id: null, title: null, episodes: [], poster: null },
+      anime: { id: null, name: null, episodes: [], poster: null, info: {} },
       queue: [],
     },
     preferences: {
@@ -46,8 +46,7 @@ const GlobalContext = ({ children }) => {
           ...state,
           downloadState: {
             ...state.downloadState,
-            anime: { id: payload.anime.id, title: payload.anime.title, episodes: payload.anime.episodes },
-            inProgress: { url: null, progress: 0, name: null },
+            ...payload,
           },
         };
       case 'DOWNLOAD_PROGRESS':
@@ -71,18 +70,47 @@ const GlobalContext = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  async function downloadAnime(anime) {
+  async function downloadAnime(anime = {}) {
     try {
-      if (!anime) return Alert.alert('Error', 'No anime provided');
-      dispatch({ type: 'DOWNLOAD', payload: { anime } });
+      console.log(`download this one -> `, JSON.stringify(anime, 0, 4));
 
-      const m3u8Url = anime.m3u8Url; // Ensure your anime object has this property
+      if (!anime?.id) {
+        Alert.alert('Error', 'No anime provided');
+        return;
+      }
+      let EPISODES = []
 
-      await DownloadUtility.download(m3u8Url, (progress) => {
-        dispatch({ type: 'DOWNLOAD_PROGRESS', payload: { progress } });
-      });
+      try {
+        const { episodes } = await scrapeAnimeEpisodes(anime.id)
+        // Alert.alert('episodes', JSON.stringify(episodes, 0, 4))
+        EPISODES = [...episodes]
+      } catch (error) {
+        console.log(`could not fetch episodes `, error);
+
+      }
+      const item = { id: anime.id, name: anime?.name, episodes: EPISODES, poster: anime.poster, };
+
+      let obj = { anime: item }
+
+      if (state.downloadState.anime?.id) {
+        const EXISTING_QUEUE = [...state.downloadState.queue];
+        // console.log(`EXISTING_QUEUE: `, JSON.stringify(EXISTING_QUEUE, null, 4));
+
+        const existingIndex = EXISTING_QUEUE.findIndex(a => a.id === item.id);
+        if (existingIndex !== -1) return false;
+
+        EXISTING_QUEUE.push(item);
+        obj = { queue: EXISTING_QUEUE }
+      }
+
+      // console.log(`Set this finally: `, obj);
+
+      dispatch({ type: 'DOWNLOAD', payload: obj });
+
+      return true
     } catch (error) {
       console.log(`Error downloading anime: `, error);
+      return false
     }
   }
 

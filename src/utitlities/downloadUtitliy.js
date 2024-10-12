@@ -4,7 +4,7 @@
 
 /**
 
-Downloaded  M3U8 DATA : 
+Downloaded  M3U8 DATA :
     #EXTM3U
     #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1818034,RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.640032,mp4a.40.2"
     index-f1-v1-a1.m3u8
@@ -20,12 +20,12 @@ Downloaded  M3U8 DATA :
  TS URL  [
     "https://ed.netmagcdn.com:2228/hls-playback/f877ebeebe0a613047d4e5f85385c11177b24cda7bdbccf58bcebc6e66fd986ce939105fd66efa1102caf0426823823858979302fff2e4f8799fefce2b3bd3c1801e578285622e8e775772dcecde4f532caccfc531ea99229b97175f819f0c284304fa05f14f162af606532376065b39d8d364bd7c9342f0
     25b24aa66b8ddb8cca7b10f5217cb23a458b3c8b1399a9ce/master.m3u8/index-f1-v1-a1.m3u8",
-    "https://ed.netmagcdn.com:2228/hls-playback/f877ebeebe0a613047d4e5f85385c11177b24cda7bdbccf58bcebc6e66fd986ce939105fd66efa1102caf0426823823858979302fff2e4f8799fefce2b3bd3c1801e578285622e8e775772dcecde4f532caccfc531ea99229b97175f819f0c284304fa05f14f162af606532376065b39d8d364bd7c9342f025b24aa66b8ddb8cca7b10f5217cb23a458b3c8b1399a9ce/master.m3u8/index-f2-v1-a1.m3u8", 
+    "https://ed.netmagcdn.com:2228/hls-playback/f877ebeebe0a613047d4e5f85385c11177b24cda7bdbccf58bcebc6e66fd986ce939105fd66efa1102caf0426823823858979302fff2e4f8799fefce2b3bd3c1801e578285622e8e775772dcecde4f532caccfc531ea99229b97175f819f0c284304fa05f14f162af606532376065b39d8d364bd7c9342f025b24aa66b8ddb8cca7b10f5217cb23a458b3c8b1399a9ce/master.m3u8/index-f2-v1-a1.m3u8",
     "https://ed.netmagcdn.com:2228/hls-playback/f877ebeebe0a613047d4e5f85385c11177b24cda7bdbccf58bcebc6e66fd986ce939105fd66efa1102caf0426823823858979302fff2e4f8799fefce2b3bd3c1801e578285622e8e775772dcecde4f532caccfc531ea99229b97175f819f0c284304fa05f14f162af606532376065b39d8d364bd7c9342f025b24aa66b8ddb8cca7b10f5217cb23a458b3c8b1399a9ce/master.m3u8/index-f3-v1-a1.m3u8"
   ]
- 
- 
- 
+
+
+
  */
 
 // export class DownloadUtility {
@@ -108,8 +108,8 @@ Downloaded  M3U8 DATA :
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import axios from 'axios';
-import { Alert, Linking, PermissionsAndroid } from 'react-native';
 import RNFS from 'react-native-fs';
+import { Alert, Linking, PermissionsAndroid } from 'react-native';
 
 export class DownloadUtility {
 
@@ -155,6 +155,56 @@ export class DownloadUtility {
     //     }
     // }
 
+    static async downloadM3u8Playlist(m3u8Url) {
+        try {
+            // Fetch the m3u8 playlist
+            const response = await axios.get(m3u8Url);
+            console.log(`the response : `, JSON.stringify(response, 0, 4));
+
+            const playlistLines = response.data.split('\n');
+            console.log(`the playlistLines : `, JSON.stringify(playlistLines, 0, 4));
+
+            // Extract the TS segment URLs
+            const tsSegmentUrls = playlistLines.filter(line => line.startsWith('#EXTINF'))
+                .map(line => {
+                    const parts = line.split(',');
+                    if (parts.length > 1) {
+                        return parts[1].trim(); // The second part after the comma is typically the URL
+                    }
+                    return null;
+                })
+                .filter(url => url !== null);
+
+            // Create a directory to store downloaded segments
+            const downloadDirectory = RNFS.DocumentDirectoryPath + '/animersive_m3u8_downloads';
+            await RNFS.mkdir(downloadDirectory);
+
+            console.log(`TS SEGMENTS : `, tsSegmentUrls);
+
+            // Download each TS segment
+            for (const tsSegmentUrl of tsSegmentUrls) {
+                const filename = tsSegmentUrl.split('/').pop();
+                const filePath = `${downloadDirectory}/${filename}`;
+
+                await RNFS.downloadFile({
+                    fromUrl: tsSegmentUrl,
+                    toFile: filePath,
+                    begin: (res) => {
+                        console.log(`=> BEGIN => `, JSON.stringify(res, 0, 4));
+                    },
+                    progress: (res) => {
+                        console.log(`\n=> PROGRESS => `, JSON.stringify(res, 0, 4));
+                    },
+                });
+            }
+
+            console.log('All TS segments downloaded successfully!');
+        } catch (error) {
+            console.error('Error downloading m3u8 playlist:', error);
+        }
+    }
+
+
     static async downloadM3U8File(m3u8Url, quality = 'highest') {
         try {
             // const hasPermission = await this.requestStoragePermission();
@@ -164,7 +214,11 @@ export class DownloadUtility {
             // }
             const outputPath = `${RNFS.DocumentDirectoryPath}/animersive-video.mp4`;
 
-            const { data: m3u8Content } = await axios.get(m3u8Url);
+            const response = await axios.get(m3u8Url);
+            console.log(`here is the get response : `, response);
+
+            const { data: m3u8Content } = response
+
             const lines = m3u8Content.split('\n');
             console.log(`Downloaded  M3U8 DATA : `, JSON.stringify(lines, 0, 4));
 
@@ -182,11 +236,15 @@ export class DownloadUtility {
     }
 
     static async parseM3U8(lines, baseUrl) {
+        console.log(`PARSE M3U8 `);
+
         const qualities = [];
         let currentQuality = null;
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
+            console.log(`LOOP FOR  : `, line);
+
             if (line.startsWith('#EXT-X-STREAM-INF')) {
                 const bandwidth = this.extractBandwidth(line);
                 currentQuality = { bandwidth, segments: [] };
@@ -236,6 +294,8 @@ export class DownloadUtility {
         for (let i = 0; i < segments.length; i++) {
             const segmentUrl = segments[i];
             const segmentPath = `${tempDir}/segment${i}.ts`;
+            console.log(`download segment : `, segmentUrl);
+
             await this.downloadSegment(segmentUrl, segmentPath);
         }
 

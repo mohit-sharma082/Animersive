@@ -88,7 +88,7 @@
 //         style={{ flex: 1 }}
 //       >
 //         <View style={{ borderWidth: 1, padding: 10, margin: 10, borderBottomColor: APP_CONFIG.primaryColor + '50', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-//           <Text style={{ fontSize: 16, fontWeight: '600', fontStyle: 'italic' }}>Mode</Text>
+//           <Text style={{  fontSize: 16, fontWeight: '600', fontStyle: 'italic' }}>Mode</Text>
 //           <Picker
 //             mode='dropdown'
 //             selectionColor={APP_CONFIG.primaryColor}
@@ -105,7 +105,7 @@
 //         </View>
 
 //         <View style={{ borderWidth: 1, padding: 10, margin: 10, borderBottomColor: APP_CONFIG.primaryColor + '50', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-//           <Text style={{ fontSize: 16, fontWeight: '600', fontStyle: 'italic' }}>Download Quality </Text>
+//           <Text style={{  fontSize: 16, fontWeight: '600', fontStyle: 'italic' }}>Download Quality </Text>
 
 //           <Picker
 //             mode='dropdown'

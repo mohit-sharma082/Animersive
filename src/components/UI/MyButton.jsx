@@ -31,7 +31,8 @@ const MyButton = (
     }
 
     return (
-        <TouchableOpacity activeOpacity={0.8}
+        <TouchableOpacity
+            activeOpacity={0.8}
             style={buttonStyle} onPress={onPress}>
             {title && <Text style={textStyles}>
                 {title}

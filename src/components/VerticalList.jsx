@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { FlashList, AnimatedFlashList } from '@shopify/flash-list';
 import { getPalette } from 'react-native-palette-picker';
-import { hexToHSL } from '../screens/Anime/AnimeScreen';
+import { hexToHSL } from '../utitlities/index';
 
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -304,7 +304,7 @@ const SwitchList = ({ animes = [] }) => {
                             flex: 1, height: '90%', paddingHorizontal: 15,
                             //  borderWidth: 1, borderColor: 'orange',
                         }}>
-                            <Text style={{ overflow: 'hidden', textAlign: 'right' }}
+                            <Text style={{  overflow: 'hidden', textAlign: 'right' }}
                                 numberOfLines={3}
                             >
                                 {item.name}{item.name}

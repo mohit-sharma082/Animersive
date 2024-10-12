@@ -121,7 +121,7 @@ function renderInputSection(search, setSearch) {
         activeOpacity={0.8}
         style={{
           ...styles.actionButton,
-          backgroundColor: APP_CONFIG.secondaryColor,
+          backgroundColor:  APP_CONFIG.primaryColor ,
         }}
         onPress={() => {
           console.log(`pressed ${debouncedSearch}`);
@@ -130,7 +130,7 @@ function renderInputSection(search, setSearch) {
           ToastAndroid.show(`Searching for ${debouncedSearch}`, ToastAndroid.SHORT);
         }}
       >
-        <Icons name={'search'} color={APP_CONFIG.primaryColor} />
+        <Icons name={'search'} color={'white' } />
       </TouchableOpacity>
     </View>
   );

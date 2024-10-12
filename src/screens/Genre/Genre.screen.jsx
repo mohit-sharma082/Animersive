@@ -59,7 +59,7 @@ const GenreScreen = ({ route }) => {
 
             <Text style={STYLES.pageTitle}>{genre} {!!data?.animes?.length ? `(${data?.animes?.length})` : ''}</Text>
 
-            {/* <Text style={{ color: '#fff' }}>
+            {/* <Text style={{  color: '#fff' }}>
                 {data?.hasNextPage && `PAGES -  ${data.totalPages} | HAS NEXT PAGE - ${data.hasNextPage} | CURRENT PAGE - ${data.currentPage}`}
             </Text> */}
             {!data?.animes?.length ?

@@ -30,7 +30,7 @@ class RapidCloud {
 
     try {
       const id = videoUrl.href.split('/').pop()?.split('?')[0];
-      console.log(`IS THE ERROR HERE  ~ `, videoUrl?.hostname, videoUrl , id)
+      console.log(`IS THE ERROR HERE??  ~ `, videoUrl?.hostname, videoUrl , id)
       const options = {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
@@ -171,4 +171,3 @@ class RapidCloud {
   }
 }
 export default RapidCloud;
-

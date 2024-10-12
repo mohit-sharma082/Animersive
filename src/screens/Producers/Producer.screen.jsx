@@ -64,7 +64,7 @@ const ProducerScreen = ({ route }) => {
             {!data?.animes?.length ?
                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator size={60} color={APP_CONFIG.primaryColor} />
-                    <Text style={{ color: APP_CONFIG.primaryColor }}>Searching for {data?.producerName}...</Text>
+                    <Text style={{  color: APP_CONFIG.primaryColor }}>Searching for {data?.producerName}...</Text>
                 </View>
                 :
                 <Grid

@@ -36,7 +36,7 @@ export default styles = StyleSheet.create({
     },
 
     actionButton: {
-        backgroundColor: 'gray',
+        // backgroundColor: 'gray',
         height: 45,
         width: 45,
         borderRadius: 100,
@@ -44,7 +44,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         right: 6,
-        top: 5
+        top: 5,
     }
 
 })

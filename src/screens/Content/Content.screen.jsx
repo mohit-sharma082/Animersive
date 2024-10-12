@@ -32,7 +32,7 @@ const ContentScreen = () => {
 
                 {data?.anime && renderAnimeDetails(data.anime)}
 
-                <Text>
+                <Text style={{ fontFamily: 'monospace' }} >
                     {JSON.stringify(data, 0, 4)}
                 </Text>
 
@@ -76,7 +76,7 @@ const renderAnimeDetails = (anime) => {
             />
 
             <View style={{ padding: 10, gap: 10, width: '55%' }}>
-                <Text style={{ fontSize: 24, color: 'white' }}>
+                <Text style={{  fontSize: 24, color: 'white' }}>
                     {info.name}
                 </Text>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
@@ -94,7 +94,7 @@ const renderAnimeDetails = (anime) => {
                     })}
 
                 </View>
-                <Text style={{ fontSize: 12, color: '#989898' }} numberOfLines={6}>
+                <Text style={{  fontSize: 12, color: '#989898' }} numberOfLines={6}>
                     {info.description}
                 </Text>
             </View>

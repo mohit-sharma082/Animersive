@@ -320,7 +320,7 @@ function DragablePlayer({ player }) {
           />
         </View>
         {/* <ScrollView>
-          <Text>
+          <Text style={{ fontFamily: 'monospace' }} >
             {JSON.stringify(Object.keys(state), 0,4)}
             {JSON.stringify(state, 0,4)}
           </Text>

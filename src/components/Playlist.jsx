@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 10,
         paddingHorizontal: 10,
+
         color: '#fff',
         fontWeight: '600'
     },

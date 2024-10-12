@@ -47,7 +47,7 @@ const EditProfileModal = ({ visible, onClose, user, onSave }) => {
                             placeholderTextColor={'#fffff80'}
                         />
 
-                        <Text style={styles.label}>Phone No. <Text style={{ fontStyle: 'italic', fontSize: 10 }}>(Optional)</Text>
+                        <Text style={styles.label}>Phone No. <Text style={{  fontStyle: 'italic', fontSize: 10 }}>(Optional)</Text>
                         </Text>
                         <TextInput
                             style={styles.input}

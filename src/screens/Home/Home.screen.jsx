@@ -20,8 +20,8 @@ import GenresList from '../../components/GenresList';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useGlobalContext } from '../../state/Context';
-import { DownloadUtility } from '../../utitlities/downloadUtitliy';
-import VerticalList from '../../components/VerticalList';
+// import { DownloadUtility } from '../../utitlities/downloadUtitliy';
+// import VerticalList from '../../components/VerticalList';
 import Grid from '../../components/Grid';
 
 export default function Home() {
@@ -125,13 +125,13 @@ export default function Home() {
               end={{ x: 1, y: 0 }}
               style={homeStyles.carouselImgGradient}
             >
-              <Text style={{ fontSize: 12, color: '#f2f2f2', width: '50%' }} numberOfLines={6}>
+              <Text style={{  fontSize: 12, color: '#f2f2f2', width: '50%' }} numberOfLines={6}>
                 {item.description}
               </Text>
-              <Text style={{ fontSize: 14, color: APP_CONFIG.primaryColor, paddingVertical: 10, fontWeight: '500' }} >
+              <Text style={{  fontSize: 14, color: APP_CONFIG.primaryColor, paddingVertical: 10, fontWeight: '500' }} >
                 {[item.episodes.sub + ' EP', ...item.otherInfo].join(' • ')}
               </Text>
-              <Text style={{ fontSize: 18, color: 'white', width: '65%', fontWeight: '600' }} numberOfLines={2}>
+              <Text style={{  fontSize: 18, color: 'white', width: '65%', fontWeight: '600' }} numberOfLines={2}>
                 {item.name}
               </Text>
             </LinearGradient>
@@ -147,9 +147,16 @@ export default function Home() {
           }}
         />
 
-        <MyButton style={{ marginTop: 5, backgroundColor: APP_CONFIG.backgroundColor }} title={'Download'} icon={'download'} secondary={true} onPress={() => {
-          downloadAnime(currCarouselItem)
-        }} />
+        <MyButton
+          title={'Download'} icon={'download'} secondary={true}
+          style={{ marginTop: 5, backgroundColor: APP_CONFIG.backgroundColor }}
+          onPress={async () => {
+            console.log(`download this anime -> `, currCarouselItem);
+            if (currCarouselItem) {
+              const res = await downloadAnime(currCarouselItem)
+              if (!!res) navigation.navigate("Downloads")
+            }
+          }} />
 
       </View>
 
@@ -226,13 +233,13 @@ export default function Home() {
     //           end={{ x: 1, y: 0 }}
     //           style={homeStyles.carouselImgGradient}
     //         >
-    //           <Text style={{ fontSize: 12, color: '#f2f2f2', width: '50%' }} numberOfLines={6}>
+    //           <Text style={{  fontSize: 12, color: '#f2f2f2', width: '50%' }} numberOfLines={6}>
     //             {item.description}
     //           </Text>
-    //           <Text style={{ fontSize: 14, color: APP_CONFIG.primaryColor, paddingVertical: 10, fontWeight: '500' }} >
+    //           <Text style={{  fontSize: 14, color: APP_CONFIG.primaryColor, paddingVertical: 10, fontWeight: '500' }} >
     //             {[item.episodes.sub + ' EP', ...item.otherInfo].join(' • ')}
     //           </Text>
-    //           <Text style={{ fontSize: 18, color: 'white', width: '65%', fontWeight: '600' }} numberOfLines={2}>
+    //           <Text style={{  fontSize: 18, color: 'white', width: '65%', fontWeight: '600' }} numberOfLines={2}>
     //             {item.name}
     //           </Text>
     //         </LinearGradient>

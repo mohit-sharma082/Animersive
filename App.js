@@ -87,7 +87,7 @@ function App() {
                     ),
                   }}
                 />
-                {/* <Tab.Screen
+                <Tab.Screen
                   name="Downloads"
                   component={DownloadsScreen}
                   options={{
@@ -96,7 +96,7 @@ function App() {
                       <Icons name={'downloads'} size={20} color={color} />
                     ),
                   }}
-                /> */}
+                />
                 <Tab.Screen
                   name="Collection"
                   component={CollectionScreen}

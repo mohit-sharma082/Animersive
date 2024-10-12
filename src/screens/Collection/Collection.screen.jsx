@@ -76,7 +76,7 @@ const CollectionScreen = () => {
                 {/* <Grid animes={animes} /> */}
 
                 {!!animes?.length && <VerticalList animes={animes} />}
-                {/* <Text style={{ color: '#fff' }}>
+                {/* <Text style={{  color: '#fff' }}>
                     {JSON.stringify(animes, 0, 4)}
                 </Text> */}
             </ScrollView>
